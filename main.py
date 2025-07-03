@@ -510,6 +510,9 @@ def other():
 		libraryMenuPageSelection = not libraryMenuPageSelection
 	time.sleep(0.1)
 	DrawUI()
+	if (menuTitle == "Volume"):
+		global volumeMenu
+		volumeMenu = not volumeMenu
 
 def FormatTime(seconds):
 	hours = int(seconds) //3600
