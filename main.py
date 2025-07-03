@@ -61,6 +61,7 @@ WaitForAudio("E8:EE:CC:F4:D6:3C")
 
 
 def button_listener():
+	global player
 	dev = InputDevice(BluetoothDevicePath)
 	print(f"lisstening to {dev.path}: {dev.name}")
 	for event in dev.read_loop():
@@ -72,9 +73,11 @@ def button_listener():
 				if code == 200:
 					print("Play pressed")
                     # call your play function
+					player.play()
 				elif code == 201:
 					print("Pause pressed")
                     # call your pause function
+					player.set_pause(1)
 
 
 def GetChapterTimes():
