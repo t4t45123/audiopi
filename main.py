@@ -307,7 +307,8 @@ def DrawVolume():
 	draw.text((5,5), "Volume", font = font, fill = 0)
 	currentVolume = player.audio_get_volume()
 	draw.rectangle((3, 100, currentVolume+3, 140), fill =0 )
-	draw.text((310, 5), volumeArr[volumeIndex], font = font2, fill = 0)
+	draw.rectangle((305,5, 320,25), fill = not(volumeMenu))
+	draw.text((310, 5), str(volumeArr[volumeIndex]), font = font2, fill = volumeMenu)
 	epd.display(epd.getbuffer(image))
 	epd.lut_GC()
 	epd.refresh()
@@ -501,6 +502,7 @@ def other():
 		libraryMenuPageSelection = not libraryMenuPageSelection
 	time.sleep(0.1)
 	DrawUI()
+
 def FormatTime(seconds):
 	hours = int(seconds) //3600
 	mins = (int(seconds) %3600) //60
