@@ -628,12 +628,19 @@ book = bookpaths[titleIndex]
 
 player = 0
 #player = vlc.MediaPlayer("/home/audiopi/e-Paper/RaspberryPi_JetsonNano/python/player/books/Arcanum Unbounded: Cosmere Collection.m4a")
-
+instance = vlc.instance("--extraintf=dbus")
+media = 0
 if (settings != -1):
 	print("loadingbook" )
-	player =  vlc.MediaPlayer(settings["book"], "--extraintf=dbus")
+	media = instance.media_new(settings["book"])
+	player = instance.media_player_new()
+	player.set_media(media)
+	#player =  vlc.MediaPlayer(settings["book"], "--extraintf=dbus")
 else:
-	player =  vlc.MediaPlayer(book, "--extraintf=dbus")
+	media = instance.media_new(book)
+	player = instance.media_player_new()
+	player.set_media(media)
+	#player =  vlc.MediaPlayer(book, "--extraintf=dbus")
 
 if (settings != -1):
 
