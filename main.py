@@ -653,7 +653,7 @@ title = media.get_meta(vlc.Meta.Title)
 
 print (GetChapters())
 print (GeneratePagedArray(GetChapters()))
-
+print(player.get_state())
 
 
 GetBooks()
