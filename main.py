@@ -148,8 +148,10 @@ def LoadBook(path):
 	title = player.get_title()
 	storedTime = GetStoredTime(mrl)
 	player.play()
+	print(player.get_state())
 	time.sleep(0.1)
 	player.set_pause(1)
+	print(player.get_state())
 	time.sleep(0.1)
 	if (storedTime != -1):
 		player.set_time(storedTime)
