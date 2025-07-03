@@ -374,6 +374,7 @@ def Left():
 			if (librarySelection <0):
 				librarySelection = len(pages[libraryPageSelection])-1
 	elif (menuTitle == "Volume"):
+		global volumeIndex
 		if (not volumeMenu):
 			currentVolume = player.audio_get_volume()
 			nextVolume = currentVolume - volumeArr[volumeIndex]
@@ -381,7 +382,6 @@ def Left():
 				nextVolume = 0
 			player.audio_set_volume(nextVolume)
 		else:
-			global volumeIndex
 			volumeIndex = (volumeIndex -1) % len(volumeArr)
 	DrawUI()
 
@@ -423,6 +423,7 @@ def right():
 			librarySelection = librarySelection % len(pages[libraryPageSelection])
 
 	elif (menuTitle == "Volume"):
+		global volumeIndex
 		if (not volumeMenu):
 			currentVolume = player.audio_get_volume()
 			nextVolume = currentVolume + volumeArr[volumeIndex]
@@ -430,7 +431,6 @@ def right():
 				nextVolume = 100
 			player.audio_set_volume(nextVolume)
 		else:
-			global volumeIndex
 			volumeIndex = (volumeIndex +1) % len(volumeArr)
 	DrawUI()
 
