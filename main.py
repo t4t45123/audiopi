@@ -292,15 +292,22 @@ def DrawLibrary():
 	epd.refresh()
 
 
+volumeIndex = 0
+volumeArr = [1,5,10]
+volumeMenu = False
+
 def DrawVolume():
 	global epd
 	global player
 	font = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'),40)
+	
+	font2 = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'),20)
 	image = Image.new('1', (epd.height, epd.width), 255)
 	draw = ImageDraw.Draw(image)
 	draw.text((5,5), "Volume", font = font, fill = 0)
 	currentVolume = player.audio_get_volume()
 	draw.rectangle((3, 100, currentVolume+3, 140), fill =0 )
+	draw.text((310, 5), volumeArr[volumeIndex], font = font2, fill = 0)
 	epd.display(epd.getbuffer(image))
 	epd.lut_GC()
 	epd.refresh()

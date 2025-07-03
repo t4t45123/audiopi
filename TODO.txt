@@ -1,0 +1,5 @@
+Volume increment changes
+bluetooth connection 
+headphone button compat
+current chapter / max chapter
+figure out chapter names
