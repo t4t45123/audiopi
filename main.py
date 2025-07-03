@@ -512,6 +512,7 @@ def other():
 	DrawUI()
 	if (menuTitle == "Volume"):
 		global volumeMenu
+		print (volumeMenu)
 		volumeMenu = not volumeMenu
 
 def FormatTime(seconds):
