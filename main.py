@@ -307,8 +307,8 @@ def DrawVolume():
 	draw.text((5,5), "Volume", font = font, fill = 0)
 	currentVolume = player.audio_get_volume()
 	draw.rectangle((3, 100, currentVolume+3, 140), fill =0 )
-	draw.rectangle((305,5, 320,25), fill = not(volumeMenu))
-	draw.text((310, 5), str(volumeArr[volumeIndex]), font = font2, fill = volumeMenu)
+	draw.rectangle((305,5, 340,25), fill = not(volumeMenu))
+	draw.text((320, 5), str(volumeArr[volumeIndex]), font = font2, fill = volumeMenu)
 	epd.display(epd.getbuffer(image))
 	epd.lut_GC()
 	epd.refresh()
@@ -374,11 +374,15 @@ def Left():
 			if (librarySelection <0):
 				librarySelection = len(pages[libraryPageSelection])-1
 	elif (menuTitle == "Volume"):
-		currentVolume = player.audio_get_volume()
-		nextVolume = currentVolume -1
-		if (nextVolume < 0):
-			nextVolume = 0
-		player.audio_set_volume(nextVolume)
+		if (not volumeMenu):
+			currentVolume = player.audio_get_volume()
+			nextVolume = currentVolume - volumeArr[volumeIndex]
+			if (nextVolume < 0):
+				nextVolume = 0
+			player.audio_set_volume(nextVolume)
+		else:
+			global volumeIndex
+			volumeIndex = (volumeIndex -1) % len(volumeArr)
 	DrawUI()
 
 
@@ -419,11 +423,15 @@ def right():
 			librarySelection = librarySelection % len(pages[libraryPageSelection])
 
 	elif (menuTitle == "Volume"):
-		currentVolume = player.audio_get_volume()
-		nextVolume = currentVolume +1
-		if (nextVolume > 100):
-			nextVolume = 100
-		player.audio_set_volume(nextVolume)
+		if (not volumeMenu):
+			currentVolume = player.audio_get_volume()
+			nextVolume = currentVolume + volumeArr[volumeIndex]
+			if (nextVolume > 100):
+				nextVolume = 100
+			player.audio_set_volume(nextVolume)
+		else:
+			global volumeIndex
+			volumeIndex = (volumeIndex +1) % len(volumeArr)
 	DrawUI()
 
 
