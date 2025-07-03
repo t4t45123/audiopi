@@ -19,9 +19,13 @@ import tempfile
 import shutil
 import subprocess
 from waveshare_epd import epd3in52
-
+from evdev import InputDevice, categorize, ecodes
+import threading
 
 logging.basicConfig(level=logging.DEBUG)
+
+BluetoothDevicePath = "/dev/input/event2"
+
 
 
 #init buttons
@@ -52,6 +56,25 @@ def WaitForAudio(mac):
 		time.sleep(2)
 
 WaitForAudio("E8:EE:CC:F4:D6:3C")
+
+
+
+
+def button_listener():
+	dev = InputDevice(BluetoothDevicePath)
+	print(f"lisstening to {dev.path}: {dev.name}")
+	for event in dev.read_loop():
+		if event.type == ecodes.EV_KEY:
+			key_event = categorize(event)
+			if key_event.keystate == key_event.key_down:
+				code = key_event.scancode
+    
+				if code == 200:
+					print("Play pressed")
+                    # call your play function
+				elif code == 201:
+					print("Pause pressed")
+                    # call your pause function
 
 
 def GetChapterTimes():
@@ -677,6 +700,9 @@ for i in range(len(titles)):
 
 print(GeneratePagedArray(titlePaths))
 
+
+
+
 try:
 	epd = epd3in52.EPD()
 	epd.init()
@@ -710,11 +736,17 @@ try:
 		LoadBook(settings["book"])
 	t = 1
 	#DrawPlayer(epd, player)
+
+	listener_thread = threading.Thread(target=button_listener, daemon=True)
+	listener_thread.start()	
+
 	while True:
-		time.sleep(5)
-		StoreBook()
+		time.sleep(1)
+		
 		t+= 1 
-		if (t%12 ==0):
+		if (t % 25 == 0):
+			StoreBook()
+		if (t%60 ==0):
 			media = player.get_media()
 			media.parse()
 			StoreSettings(media.get_mrl(), player.audio_get_volume())
