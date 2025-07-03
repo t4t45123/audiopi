@@ -630,7 +630,7 @@ book = bookpaths[titleIndex]
 
 player = 0
 #player = vlc.MediaPlayer("/home/audiopi/e-Paper/RaspberryPi_JetsonNano/python/player/books/Arcanum Unbounded: Cosmere Collection.m4a")
-instance = vlc.Instance("--intf=dummy --extraintf=dbus")
+instance = vlc.Instance("--intf=dummy", "--extraintf=dbus")
 media = 0
 if (settings != -1):
 	print("loadingbook" )
