@@ -306,7 +306,8 @@ def DrawVolume():
 	draw = ImageDraw.Draw(image)
 	draw.text((5,5), "Volume", font = font, fill = 0)
 	currentVolume = player.audio_get_volume()
-	draw.rectangle((3, 100, currentVolume+3, 140), fill =0 )
+	
+	draw.rectangle((3, 100, int(currentVolume*3.4)+3, 140), fill =0 )
 	draw.rectangle((305,5, 340,25), fill = not(volumeMenu))
 	draw.text((320, 5), str(volumeArr[volumeIndex]), font = font2, fill = volumeMenu)
 	epd.display(epd.getbuffer(image))
@@ -630,9 +631,9 @@ player = 0
 
 if (settings != -1):
 	print("loadingbook" )
-	player =  vlc.MediaPlayer(settings["book"])
+	player =  vlc.MediaPlayer(settings["book"], "--extraintf=dbus")
 else:
-	player =  vlc.MediaPlayer(book)
+	player =  vlc.MediaPlayer(book, "--extraintf=dbus")
 
 if (settings != -1):
 
