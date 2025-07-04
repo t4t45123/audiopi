@@ -737,7 +737,7 @@ print(GeneratePagedArray(titlePaths))
 
 try:
 	
-	global epd
+	
 	font24 = ImageFont.truetype(os.path.join(picdir,'Font.ttc'),16)
 	font18 = ImageFont.truetype(os.path.join(picdir,'Font.ttc'),16)
 
