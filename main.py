@@ -281,7 +281,19 @@ libraryMenuPageSelection = False
 libraryPageSelection = 0
 librarySelection = 0
 
+def DrawLoading(text):
+    
+	global epd
+	global player
+	font = ImageFont.truetype(os.path.join(picdir,'Font.ttc'),85)
+	image = Image.new('1', (epd.height, epd.width), 255)
+	draw = ImageDraw.Draw(image)
+	draw.text((3,60), str(text), font = font, fill =0)
 
+
+	epd.display(epd.getbuffer(image))
+	epd.lut_GC()
+	epd.refresh()
 
 def DrawLibrary():
 	print("Library YAY")
@@ -628,6 +640,26 @@ def DrawPlayer(epd, player):
 	epd.lut_GC()
 	epd.refresh()
 
+try:
+	epd = epd3in52.EPD()
+	epd.init()
+	epd.display_NUM(epd.WHITE)
+	epd.lut_GC()
+	epd.refresh()
+	epd.send_command(0x50)
+	epd.send_data(0x17)
+	time.sleep(1)
+	DrawLoading()
+
+except IOError as e:
+	logging.info(e)
+
+except	KeyboardInterrupt:
+	logging.info("ctrl + c:")
+	epd3in52.epdconfig.module_exit(cleanup=True)
+	exit()
+
+
 
 #button callbacks
 leftButton.when_pressed = Left
@@ -703,14 +735,8 @@ print(GeneratePagedArray(titlePaths))
 
 
 try:
-	epd = epd3in52.EPD()
-	epd.init()
-	epd.display_NUM(epd.WHITE)
-	epd.lut_GC()
-	epd.refresh()
-	epd.send_command(0x50)
-	epd.send_data(0x17)
-	time.sleep(1)
+	
+	global epd
 	font24 = ImageFont.truetype(os.path.join(picdir,'Font.ttc'),16)
 	font18 = ImageFont.truetype(os.path.join(picdir,'Font.ttc'),16)
 
