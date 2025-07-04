@@ -156,6 +156,7 @@ def StoreSettings(book, volume):
 	shutil.move(temp_name, settingsPath)
 
 def LoadBook(path):
+	DrawLoading("Loading")
 	global player
 	global title
 	player.set_mrl(path)
@@ -649,7 +650,7 @@ try:
 	epd.send_command(0x50)
 	epd.send_data(0x17)
 	time.sleep(1)
-	DrawLoading()
+	DrawLoading("Starting")
 
 except IOError as e:
 	logging.info(e)
