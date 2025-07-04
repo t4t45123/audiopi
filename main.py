@@ -70,14 +70,10 @@ def button_listener():
 			if key_event.keystate == key_event.key_down:
 				code = key_event.scancode
     
-				if code == 200:
+				if code == 200 or code == 201:
 					print("Play pressed")
-                    # call your play function
-					player.play()
-				elif code == 201:
-					print("Pause pressed")
-                    # call your pause function
-					player.set_pause(1)
+					state = player.get_state()
+					player.set_pause(int(state == vlc.State.Playing))
 
 
 def GetChapterTimes():
