@@ -332,8 +332,8 @@ def DrawVolume():
 	currentVolume = player.audio_get_volume()
 	
 	draw.rectangle((3, 100, int(currentVolume*3.4)+3, 140), fill =0 )
-	draw.rectangle((305,5, 340,25), fill = not(volumeMenu))
-	draw.text((320, 5), str(volumeArr[volumeIndex]), font = font2, fill = volumeMenu)
+	draw.rectangle((305,0, 360,35), fill = not(volumeMenu))
+	draw.text((315, 5), str(volumeArr[volumeIndex]), font = font2, fill = volumeMenu)
 	epd.display(epd.getbuffer(image))
 	epd.lut_GC()
 	epd.refresh()
