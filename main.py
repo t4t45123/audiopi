@@ -24,7 +24,7 @@ import threading
 
 logging.basicConfig(level=logging.DEBUG)
 
-BluetoothDevicePath = "/dev/input/event2"
+BluetoothDevicePath = "/dev/input/event0"
 
 
 
