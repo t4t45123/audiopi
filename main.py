@@ -92,16 +92,10 @@ def GetChapterTimes():
 	times = []
 	time.sleep(0.1)
 	chapterCount = player.get_chapter_count()
-	titles = player.get_full_title_descriptions()
-	if titles:
-		for title_index, title in enumerate(titles):
-			print(f"Title {title_index}: '{title.name}' (duration: {title.duration / 1_000_000:.2f} sec)")
-			if title.chapter_descriptions:
-				for chapter in title.chapter_descriptions:
-					start_sec = chapter.time_offset /1000_000
-					print(f"  Chapter: '{chapter.name}', starts at {start_sec:.2f} sec")
-			else:
-					print("No title/chapter descriptions found.")
+	for i in range(chapterCount):
+		times.append(media.get_chapter_start_time(i))
+		time.sleep(0.1)
+
 	player.set_time(currentTime)
 	return times
 
