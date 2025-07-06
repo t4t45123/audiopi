@@ -93,10 +93,7 @@ def GetChapterTimes():
 	time.sleep(0.1)
 	chapterCount = player.get_chapter_count()
 	for i in range(chapterCount):
-		player.set_chapter(i)
-		time.sleep(0.1)
-		chapterTime = player.get_time()
-		times.append(chapterTime)
+		times.append(media.get_chapter_start_time(i))
 		time.sleep(0.1)
 
 	player.set_time(currentTime)
