@@ -618,9 +618,9 @@ def DrawPlayer(epd, player):
 	font16 = ImageFont.truetype(os.path.join(picdir,'Font.ttc'),16)
 
 	chapterCount = player.get_chapter_count()
-	time.sleep(0.1)
-	GetChapterTimes()
-	time.sleep(0.1)
+	#time.sleep(0.1)
+	#GetChapterTimes()
+	#time.sleep(0.1)
 	
 	image = Image.new('1', (epd.height, epd.width), 255)
 	draw = ImageDraw.Draw(image)
