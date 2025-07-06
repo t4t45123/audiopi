@@ -95,6 +95,7 @@ def GetChapterTimes():
 	titles = player.get_full_title_descriptions()
 	if titles:
 		for title_index, title in enumerate(titles):
+			print(title)
 			print(f"Title {title_index}: '{title.name}' (duration: {title.duration / 1_000_000:.2f} sec)")
 			if title.chapter_descriptions:
 				for chapter in title.chapter_descriptions:
