@@ -59,7 +59,7 @@ WaitForAudio("E8:EE:CC:F4:D6:3C")
 
 
 def GetChapterFromTimes(time):
-	chapter = 1
+	chapter = 0
 	for x in chapterTimes:
 		chapter = chapter + 1
 		if x > time:
@@ -614,21 +614,19 @@ def DrawPlayer(epd, player):
 	time.sleep(0.1)
 	GetChapterTimes()
 	time.sleep(0.1)
-	currentChapter = player.get_chapter()
+	
 	image = Image.new('1', (epd.height, epd.width), 255)
 	draw = ImageDraw.Draw(image)
 	print("CurrentChapter:")
+	currentChapter = GetChapterFromTimes(player.get_time())
 	print(currentChapter)
-	print(player.get_chapter())
-	print(player.get_time())
-	print(GetChapterFromTimes(player.get_time()))
 	total_seconds = player.get_length() /1000
 	current_seconds = player.get_time() / 1000
 	current_chapter_time = player.get_time() - chapterTimes[currentChapter]
 	if (currentChapter < len(chapterTimes)):
 		chapter_end_time = chapterTimes[currentChapter + 1] - chapterTimes[currentChapter]
 	else:
-		chapter_end_time = player_get_length()
+		chapter_end_time = player.get_length()
 	if (chapter_end_time == 0):
 		chapter_end_time = 1
 	print("end time ")
