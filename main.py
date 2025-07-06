@@ -58,6 +58,12 @@ def WaitForAudio(mac):
 WaitForAudio("E8:EE:CC:F4:D6:3C")
 
 
+def GetChapterFromTimes(time):
+	chapter = 1
+	for x in chapterTimes:
+		chapter = chapter + 1
+		if x > time:
+			return chapter
 
 
 def button_listener():
@@ -605,17 +611,24 @@ def DrawPlayer(epd, player):
 	font16 = ImageFont.truetype(os.path.join(picdir,'Font.ttc'),16)
 
 	chapterCount = player.get_chapter_count()
+	time.sleep(0.1)
+	GetChapterTimes()
+	time.sleep(0.1)
 	currentChapter = player.get_chapter()
-#	time.sleep(0.1)
-#	GetChapterTimes()
-#	time.sleep(0.1)
 	image = Image.new('1', (epd.height, epd.width), 255)
 	draw = ImageDraw.Draw(image)
-
+	print("CurrentChapter:")
+	print(currentChapter)
+	print(player.get_chapter())
+	print(player.get_time())
+	print(GetChapterFromTimes(player.get_time()))
 	total_seconds = player.get_length() /1000
 	current_seconds = player.get_time() / 1000
 	current_chapter_time = player.get_time() - chapterTimes[currentChapter]
-	chapter_end_time = chapterTimes[currentChapter + 1] - chapterTimes[currentChapter]
+	if (currentChapter < len(chapterTimes)):
+		chapter_end_time = chapterTimes[currentChapter + 1] - chapterTimes[currentChapter]
+	else:
+		chapter_end_time = player_get_length()
 	if (chapter_end_time == 0):
 		chapter_end_time = 1
 	print("end time ")
