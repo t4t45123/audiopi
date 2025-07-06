@@ -63,7 +63,7 @@ def GetChapterFromTimes(time):
 	for x in chapterTimes:
 		chapter = chapter + 1
 		if x > time:
-			return chapter
+			return chapter -1
 
 
 def button_listener():
