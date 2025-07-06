@@ -491,6 +491,8 @@ def enter():
 		state = player.get_state()
 		print(state)
 		player.set_pause(int(state == vlc.State.Playing))
+		if (state == vlc.State.Ended):
+			player.play()
 	elif (menuTitle == "Menu"):
 		print("menuEnter")
 		option = menuSelection[menuSelectionIndex]
