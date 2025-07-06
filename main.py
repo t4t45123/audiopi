@@ -625,7 +625,8 @@ def DrawPlayer(epd, player):
 	image = Image.new('1', (epd.height, epd.width), 255)
 	draw = ImageDraw.Draw(image)
 	print("CurrentChapter:")
-	currentChapter = GetChapterFromTimes(player.get_time())
+	currentChapter = GetChapterFromTimes(player.get_time())-1
+	
 	print(currentChapter)
 	total_seconds = player.get_length() /1000
 	current_seconds = player.get_time() / 1000
@@ -648,7 +649,7 @@ def DrawPlayer(epd, player):
 	# current time text
 	chapterTimeText =(f"{FormatTime(current_chapter_time/1000)}/{FormatTime(chapter_end_time/1000)}")
 
-	draw.text((100, 132), (f"Chapter: {player.get_chapter()+1}"), font = font24, fill =0)
+	draw.text((100, 132), (f"Chapter: {currentChapter+1}"), font = font24, fill =0)
 	draw.text((100,153), (f"{FormatTime(current_seconds)}/{FormatTime(total_seconds)}"), font = font24, fill = 0)
 	draw.text((100,175), chapterTimeText, font = font24, fill =0)
 	#display image
