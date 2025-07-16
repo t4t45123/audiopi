@@ -291,7 +291,10 @@ def DrawChapters():
 		if (currentItem == chapterSelection and chapterMenuPageSelection == False):
 			draw.rectangle((0,itemYPosition,360,itemYPosition+24), fill=0)
 			fillVal =1
-		draw.text((10,itemYPosition), f"{chapterInfo[item-1]['title']}", font = font, fill = fillVal)
+		chapterTitle = chapterInfo[item-1]['title']
+		if (chapterTitle == ""):
+			chapterTitle = f"Chapter: {item}"
+		draw.text((10,itemYPosition), f"{chapterTitle}", font = font, fill = fillVal)
 		# draw start time of chapter
 		draw.rectangle((275,itemYPosition, 360, itemYPosition+24), fill = not fillVal)
 		draw.text((280, itemYPosition), str(FormatTime(chapterInfo[item-1]["start_time"])), font = font, fill = fillVal)
@@ -672,6 +675,8 @@ def DrawPlayer(epd, player):
 	chapterTimeText =(f"{FormatTime(current_chapter_time)}/{FormatTime(chapter_end_time)}")
 	chapterTitleInfo = chapterInfo[currentChapter]
 	chapterTitle = chapterTitleInfo["title"]
+	if (chapterTitle == ""):
+		chapterTitle = currentChapter
 	draw.text((10, 132), (f"Chapter: {chapterTitle}"), font = font24, fill =0)
 	draw.text((10,153), (f"{FormatTime(current_seconds)}/{FormatTime(total_seconds)}"), font = font24, fill = 0)
 	draw.text((10,175), chapterTimeText, font = font24, fill =0)
