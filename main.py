@@ -292,7 +292,7 @@ def DrawChapters():
 			fillVal =1
 		draw.text((10,itemYPosition), str(item), font = font, fill = fillVal)
 		# draw start time of chapter
-		draw.text((280, itemYPosition), str(FormatTime(chapterInfo[item-1]["start_time"]/1000)), font = font, fill = fillVal)
+		draw.text((280, itemYPosition), str(FormatTime(chapterInfo[item-1]["start_time"])), font = font, fill = fillVal)
 		itemYPosition += 22
 		currentItem += 1
 
@@ -667,7 +667,7 @@ def DrawPlayer(epd, player):
 	draw.rectangle((barMargin, barY, barMargin+filled, barY+barHeight),fill=0)
 
 	# current time text
-	chapterTimeText =(f"{FormatTime(current_chapter_time/1000)}/{FormatTime(chapter_end_time/1000)}")
+	chapterTimeText =(f"{FormatTime(current_chapter_time/1000)}/{FormatTime(chapter_end_time)}")
 
 	draw.text((100, 132), (f"Chapter: {currentChapter+1}"), font = font24, fill =0)
 	draw.text((100,153), (f"{FormatTime(current_seconds)}/{FormatTime(total_seconds)}"), font = font24, fill = 0)
