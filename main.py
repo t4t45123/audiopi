@@ -77,7 +77,7 @@ def GetChapterInfoFromFile(path):
 	
 	cmd = [
 			"ffprobe",
-			"-i", str(file_path),
+			"-i", str(path),
 			"-print_format", "json",
 			"-show_chapters",
 			"-loglevel", "error"
