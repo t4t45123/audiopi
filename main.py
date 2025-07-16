@@ -657,7 +657,7 @@ def DrawPlayer(epd, player):
 	total_seconds = player.get_length() /1000
 	current_seconds = player.get_time() / 1000
 	current_chapter_time = player.get_time() - chapterInfo[currentChapter]["start_time"]
-	chapter_end_time = chapterInfo[currentChapter]["end_time"]
+	chapter_end_time = chapterInfo[currentChapter]["end_time"] - chapterInfo[currentChapter]["start_time"]
 
 	progress = max(0.0, min(1.0, current_chapter_time / chapter_end_time if total_seconds else 1))
 
@@ -667,11 +667,11 @@ def DrawPlayer(epd, player):
 	draw.rectangle((barMargin, barY, barMargin+filled, barY+barHeight),fill=0)
 
 	# current time text
-	chapterTimeText =(f"{FormatTime(current_chapter_time)}/{FormatTime(chapter_end_time)}")
+	chapterTimeText =(f"{FormatTime(current_chapter_time/1000)}/{FormatTime(chapter_end_time)}")
 
-	draw.text((100, 132), (f"Chapter: {currentChapter+1}"), font = font24, fill =0)
-	draw.text((100,153), (f"{FormatTime(current_seconds)}/{FormatTime(total_seconds)}"), font = font24, fill = 0)
-	draw.text((100,175), chapterTimeText, font = font24, fill =0)
+	draw.text((50, 132), (f"Chapter: {chapterInfo[currentChapter]["title"]}"), font = font24, fill =0)
+	draw.text((50,153), (f"{FormatTime(current_seconds)}/{FormatTime(total_seconds)}"), font = font24, fill = 0)
+	draw.text((50,175), chapterTimeText, font = font24, fill =0)
 	#display image
 
 	draw.text((5,5), (f"{title}"), font = font16, fill =0)
