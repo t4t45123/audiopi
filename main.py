@@ -20,6 +20,7 @@ import shutil
 import subprocess
 from waveshare_epd import epd3in52
 from evdev import InputDevice, categorize, ecodes
+from pathlib import Path
 import threading
 
 logging.basicConfig(level=logging.DEBUG)
@@ -57,6 +58,36 @@ def WaitForAudio(mac):
 
 WaitForAudio("E8:EE:CC:F4:D6:3C")
 
+
+
+def GetChapterInfoFromFile(path):
+	path = Path(path)
+	if not path.exists():
+		raise FileNotFoundError(f"Could not find {path}")
+	cmd = [
+			"ffprobe",
+			"-i", str(file_path),
+			"-print_format", "json",
+			"-show_chapters",
+			"-loglevel", "error"
+		]
+	result = subprocess.run(cmd, capture_output=True, text=True)
+	if result.returncode != 0:
+		raise RuntimeError(f"ffProbe error: \n{result.stderr}")
+	data = json.loads(result.stdout)
+	chapters = data.get("chapters", [])
+	formatted = []
+	for i, chapter in enumerate(chapters):
+		start = float(chapter["start_time"])
+		end = float(chapter["end_time"])
+		title = chapter.get("tags",{}).get("title", f"Chapter {i}")
+		formatted.append({
+			"index": i,
+			"start_time": start,
+			"end_time": end,
+			"title": title
+		})
+	return formatted
 
 def GetChapterFromTimes(time):
 	chapter = 0
@@ -714,14 +745,13 @@ media = 0
 if (settings != -1):
 	print("loadingbook" )
 	media = instance.media_new(settings["book"])
+	print (GetChapterInfoFromFile(settings["book"]))
 	player = instance.media_player_new()
 	player.set_media(media)
-	#player =  vlc.MediaPlayer(settings["book"], "--extraintf=dbus")
 else:
 	media = instance.media_new(book)
 	player = instance.media_player_new()
 	player.set_media(media)
-	#player =  vlc.MediaPlayer(book, "--extraintf=dbus")
 
 if (settings != -1):
 
