@@ -626,7 +626,11 @@ def DrawPlayer(epd, player):
 	image = Image.new('1', (epd.height, epd.width), 255)
 	draw = ImageDraw.Draw(image)
 	print("CurrentChapter:")
-	currentChapter = GetChapterFromTimes(player.get_time())-1
+	newChapter = GetChapterFromTimes(player.get_time())
+	if (newChapter == -1):
+		currentChapter = 0
+	else:
+		currentChapter = GetChapterFromTimes(player.get_time())-1
 	
 	print(currentChapter)
 	total_seconds = player.get_length() /1000
