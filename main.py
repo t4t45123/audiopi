@@ -648,7 +648,7 @@ def DrawPlayer(epd, player):
 	image = Image.new('1', (epd.height, epd.width), 255)
 	draw = ImageDraw.Draw(image)
 	print("CurrentChapter:")
-	newChapter = GetChapterFromTimes(player.get_time())
+	newChapter = GetChapterFromTimes(player.get_time()/1000)
 	if (newChapter == -1):
 		currentChapter = 0
 	else:
@@ -667,7 +667,7 @@ def DrawPlayer(epd, player):
 	draw.rectangle((barMargin, barY, barMargin+filled, barY+barHeight),fill=0)
 
 	# current time text
-	chapterTimeText =(f"{FormatTime(current_chapter_time/1000)}/{FormatTime(chapter_end_time)}")
+	chapterTimeText =(f"{FormatTime(current_chapter_time)}/{FormatTime(chapter_end_time)}")
 
 	draw.text((100, 132), (f"Chapter: {currentChapter+1}"), font = font24, fill =0)
 	draw.text((100,153), (f"{FormatTime(current_seconds)}/{FormatTime(total_seconds)}"), font = font24, fill = 0)
