@@ -668,8 +668,9 @@ def DrawPlayer(epd, player):
 
 	# current time text
 	chapterTimeText =(f"{FormatTime(current_chapter_time/1000)}/{FormatTime(chapter_end_time)}")
-
-	draw.text((50, 132), (f"Chapter: {chapterInfo[currentChapter]["title"]}"), font = font24, fill =0)
+	chapterTitle = chapterInfo[currentChapter]
+	
+	draw.text((50, 132), (f"Chapter: {chapterTitle["title"]}"), font = font24, fill =0)
 	draw.text((50,153), (f"{FormatTime(current_seconds)}/{FormatTime(total_seconds)}"), font = font24, fill = 0)
 	draw.text((50,175), chapterTimeText, font = font24, fill =0)
 	#display image
