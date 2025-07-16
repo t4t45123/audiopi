@@ -46,6 +46,7 @@ timesPath = "./times.json"
 settingsPath = "./settings.json"
 bookpaths = []
 chapterTimes = []
+chapterInfo = []
 
 def WaitForAudio(mac):
 	print("waiting")
@@ -204,6 +205,8 @@ def StoreSettings(book, volume):
 		temp_name = tf.name
 	shutil.move(temp_name, settingsPath)
 
+
+
 def LoadBook(path):
 	DrawLoading("Loading")
 	global player
@@ -215,8 +218,6 @@ def LoadBook(path):
 	time.sleep(0.2)	
 	mrl = media.get_mrl()
 	time.sleep(0.2)
-	chapterCount = player.get_chapter_count()
-	currentChapter = player.get_chapter()
 	title = player.get_title()
 	storedTime = GetStoredTime(mrl)
 	player.play()
@@ -228,12 +229,9 @@ def LoadBook(path):
 	if (storedTime != -1):
 		player.set_time(storedTime)
 	print("loaded: " + str(storedTime))
-	global chapterTimes
-	a = GetChapterTimes()
-	time.sleep(0.1)
-	print(a)
-	
-	chapterTimes = a
+	global chapterInfo
+	chapterInfo = GetChapterInfoFromFile(path)
+	print(chapterInfo)
 	title = media.get_meta(vlc.Meta.Title)
 	# set all chapter menu stuff to 0
 	time.sleep(0.1)
@@ -672,8 +670,7 @@ def DrawPlayer(epd, player):
 	if (newChapter == -1):
 		currentChapter = 0
 	else:
-		currentChapter = GetChapterFromTimes(player.get_time())-1
-	print (media.audio_get_track_description())
+		currentChapter = newChapter-1
 	print(currentChapter)
 	total_seconds = player.get_length() /1000
 	current_seconds = player.get_time() / 1000
