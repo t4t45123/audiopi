@@ -631,7 +631,7 @@ def DrawPlayer(epd, player):
 		currentChapter = 0
 	else:
 		currentChapter = GetChapterFromTimes(player.get_time())-1
-	
+	print (media.audio_get_track_description())
 	print(currentChapter)
 	total_seconds = player.get_length() /1000
 	current_seconds = player.get_time() / 1000
