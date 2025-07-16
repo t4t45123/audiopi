@@ -59,9 +59,16 @@ def WaitForAudio(mac):
 
 WaitForAudio("E8:EE:CC:F4:D6:3C")
 
-
+def sanitize_path(input_path):
+	input_path = str(input_path) 
+	if input_path.startswith("file:"):
+		from urllib.parse import urlparse, unquote
+		return unquote(urlparse(input_path).path)
+	return unquote(input_path)
 
 def GetChapterInfoFromFile(path):
+	path = sanitize_path(path)
+
 	path = Path(path)
 
 	if path.startswith("file:"):
