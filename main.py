@@ -103,10 +103,10 @@ def GetChapterInfoFromFile(path):
 
 def GetChapterFromTimes(time):
 	chapter = 0
-	for x in chapterTimes:
+	for x in chapterInfo:
 		chapter = chapter + 1
-		if x > time:
-			return chapter -1
+		if (x["start_time"] < time and time < x["end_time"]):
+			return chapter
 	return -1
 
 
@@ -126,25 +126,6 @@ def button_listener():
 					player.set_pause(int(state == vlc.State.Playing))
 
 
-def GetChapterTimes():
-	global player
-	media = player.get_media()
-	media.parse()
-	currentTime = player.get_time()
-	if (player.get_chapter() == -1):
-		return -1
-	times = []
-	time.sleep(0.1)
-	chapterCount = player.get_chapter_count()
-	for i in range(chapterCount):
-		player.set_chapter(i)
-		time.sleep(0.1)
-		chapterTime = player.get_time()
-		times.append(chapterTime)
-		time.sleep(0.1)
-
-	player.set_time(currentTime)
-	return times
 
 
 def GetStoredTime(path: str) -> int:
@@ -231,7 +212,7 @@ def LoadBook(path):
 	print("loaded: " + str(storedTime))
 	global chapterInfo
 	chapterInfo = GetChapterInfoFromFile(path)
-	print(chapterInfo)
+	
 	title = media.get_meta(vlc.Meta.Title)
 	# set all chapter menu stuff to 0
 	time.sleep(0.1)
@@ -310,7 +291,8 @@ def DrawChapters():
 			draw.rectangle((0,itemYPosition,360,itemYPosition+24), fill=0)
 			fillVal =1
 		draw.text((10,itemYPosition), str(item), font = font, fill = fillVal)
-		draw.text((280, itemYPosition), str(FormatTime(chapterTimes[item-1]/1000)), font = font, fill = fillVal)
+		# draw start time of chapter
+		draw.text((280, itemYPosition), str(FormatTime(chapterInfo[item-1]["start_time"]/1000)), font = font, fill = fillVal)
 		itemYPosition += 22
 		currentItem += 1
 
@@ -674,15 +656,9 @@ def DrawPlayer(epd, player):
 	print(currentChapter)
 	total_seconds = player.get_length() /1000
 	current_seconds = player.get_time() / 1000
-	current_chapter_time = player.get_time() - chapterTimes[currentChapter]
-	if (currentChapter < len(chapterTimes)):
-		chapter_end_time = chapterTimes[currentChapter + 1] - chapterTimes[currentChapter]
-	else:
-		chapter_end_time = player.get_length()
-	if (chapter_end_time == 0):
-		chapter_end_time = 1
-	print("end time ")
-	print(chapter_end_time)
+	current_chapter_time = player.get_time() - chapterInfo[currentChapter]["start_time"]
+	chapter_end_time = chapterInfo[currentChapter]["end_time"]
+
 	progress = max(0.0, min(1.0, current_chapter_time / chapter_end_time if total_seconds else 1))
 
 	barWidth = epd.height - (2*barMargin)
