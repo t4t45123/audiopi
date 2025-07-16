@@ -745,7 +745,7 @@ media = 0
 if (settings != -1):
 	print("loadingbook" )
 	media = instance.media_new(settings["book"])
-	print (GetChapterInfoFromFile(settings["book"]))
+	
 	player = instance.media_player_new()
 	player.set_media(media)
 else:
@@ -761,7 +761,7 @@ else:
 media = player.get_media()
 media.parse()
 title = media.get_meta(vlc.Meta.Title)
-
+print (GetChapterInfoFromFile(settings["book"][5:]))
 print (GetChapters())
 print (GeneratePagedArray(GetChapters()))
 print(player.get_state())
