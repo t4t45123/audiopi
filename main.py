@@ -71,9 +71,7 @@ def GetChapterInfoFromFile(path):
 
 	path = Path(path)
 
-	if path.startswith("file:"):
-		path = unquote(urlparse(path).path)
-        
+	
 	if not path.exists():
 		raise FileNotFoundError(f"Could not find {path}")
 	
