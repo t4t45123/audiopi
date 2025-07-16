@@ -667,7 +667,7 @@ def DrawPlayer(epd, player):
 	draw.rectangle((barMargin, barY, barMargin+filled, barY+barHeight),fill=0)
 
 	# current time text
-	chapterTimeText =(f"{FormatTime(current_chapter_time/1000)}/{FormatTime(chapter_end_time)}")
+	chapterTimeText =(f"{FormatTime(current_chapter_time)}/{FormatTime(chapter_end_time)}")
 	chapterTitleInfo = chapterInfo[currentChapter]
 	chapterTitle = chapterTitleInfo["title"]
 	draw.text((10, 132), (f"Chapter: {chapterTitle}"), font = font24, fill =0)
