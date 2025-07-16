@@ -290,8 +290,9 @@ def DrawChapters():
 		if (currentItem == chapterSelection and chapterMenuPageSelection == False):
 			draw.rectangle((0,itemYPosition,360,itemYPosition+24), fill=0)
 			fillVal =1
-		draw.text((10,itemYPosition), f"Chapter: {chapterInfo[item-1]['title']}", font = font, fill = fillVal)
+		draw.text((10,itemYPosition), f"{chapterInfo[item-1]['title']}", font = font, fill = fillVal)
 		# draw start time of chapter
+		draw.rectangle((275,itemYPosition, 360, itemYPosition+24), fill = not fillVal)
 		draw.text((280, itemYPosition), str(FormatTime(chapterInfo[item-1]["start_time"])), font = font, fill = fillVal)
 		itemYPosition += 22
 		currentItem += 1
