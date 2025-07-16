@@ -22,7 +22,7 @@ from waveshare_epd import epd3in52
 from evdev import InputDevice, categorize, ecodes
 from pathlib import Path
 import threading
-from urllib.parse import urlparse, unquote
+#from urllib.parse import urlparse, unquote
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -61,6 +61,7 @@ def WaitForAudio(mac):
 WaitForAudio("E8:EE:CC:F4:D6:3C")
 
 def sanitize_path(input_path):
+	from urllib.parse import urlparse, unquote
 	input_path = str(input_path) 
 	if input_path.startswith("file:"):
 		from urllib.parse import urlparse, unquote
@@ -747,7 +748,6 @@ else:
 media = player.get_media()
 media.parse()
 title = media.get_meta(vlc.Meta.Title)
-print (GetChapterInfoFromFile(settings["book"]))
 print (GetChapters())
 print (GeneratePagedArray(GetChapters()))
 print(player.get_state())
