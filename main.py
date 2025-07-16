@@ -22,6 +22,7 @@ from waveshare_epd import epd3in52
 from evdev import InputDevice, categorize, ecodes
 from pathlib import Path
 import threading
+from urllib.parse import urlparse, unquote
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -62,8 +63,13 @@ WaitForAudio("E8:EE:CC:F4:D6:3C")
 
 def GetChapterInfoFromFile(path):
 	path = Path(path)
+
+	if path.startswith("file:"):
+		path = unquote(urlparse(path).path)
+        
 	if not path.exists():
 		raise FileNotFoundError(f"Could not find {path}")
+	
 	cmd = [
 			"ffprobe",
 			"-i", str(file_path),
@@ -761,7 +767,7 @@ else:
 media = player.get_media()
 media.parse()
 title = media.get_meta(vlc.Meta.Title)
-print (GetChapterInfoFromFile(settings["book"][5:]))
+print (GetChapterInfoFromFile(settings["book"]))
 print (GetChapters())
 print (GeneratePagedArray(GetChapters()))
 print(player.get_state())
