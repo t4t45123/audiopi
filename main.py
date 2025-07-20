@@ -120,7 +120,7 @@ def button_listener():
 			key_event = categorize(event)
 			if key_event.keystate == key_event.key_down:
 				code = key_event.scancode
-    
+	
 				if code == 200 or code == 201:
 					print("Play pressed")
 					state = player.get_state()
@@ -246,7 +246,11 @@ def GetTitles():
 	titles.clear()
 	GetBooks()
 	for x in bookpaths:
-		book = x.split("/")[-1].split(".")[0]
+		filename = x.split("/")[-1]
+		if '.' in filename:
+			book = '.'.join(filename.split('.')[:-1])
+		else:
+			book = filename
 		titles.append(book)
 
 def GetChapters():
@@ -317,7 +321,7 @@ libraryPageSelection = 0
 librarySelection = 0
 
 def DrawLoading(text):
-    
+	
 	global epd
 	global player
 	font = ImageFont.truetype(os.path.join(picdir,'Font.ttc'),85)
