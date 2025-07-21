@@ -185,7 +185,13 @@ def StoreSettings(book, volume):
 	except (ValueError, TypeError):
 		print("Warning: 'time_listened' missing or invalid, resetting to 0.")
 		prev_time = 0
-	data["time_listened"] = prev_time + 60
+	increment = 0
+	try:
+		if player and player.get_state() == vlc.State.Playing:
+			increment = 60
+	except Exception as e:
+		print(f"Warning: Could not check player state: {e}")
+	data["time_listened"] = prev_time + increment
 	data["book"] = book
 	data["volume"] = volume
 	
