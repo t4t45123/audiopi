@@ -284,9 +284,6 @@ def GetChapters():
 	global player
 	chapters = []
 	chapterCount = player.get_chapter_count()
-	if (menuTitle == "Stats"):
-		DrawStats()
-		return
 	for i in range(chapterCount):
 		chapters.append(i+1)
 	return chapters
@@ -438,6 +435,9 @@ def DrawUI():
 		return
 	if (menuTitle == "Volume"):
 		DrawVolume()
+		return
+	if (menuTitle == "Stats"):
+		DrawStats()
 		return
 
 def Left():
@@ -646,7 +646,7 @@ def DrawChapterSelect(epd):
 	image = Image.new('1', (epd.height, epd.width), 255)
 	draw = ImageDraw.Draw(image)
 
-menuSelection = ["Player", "Chapters", "Library", "Volume"]
+menuSelection = ["Player", "Chapters", "Library", "Volume", "Stats"]
 menuSelectionIndex = 0
 def DrawMenu():
 	global menuSelection
