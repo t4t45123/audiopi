@@ -249,13 +249,18 @@ def DrawStats():
 	image = Image.new('1', (epd.height, epd.width), 255)
 	draw = ImageDraw.Draw(image)
 	settings = GetSettings()
-	if settings == -1:
-		draw.text((10, 10), "No stats available", font=font, fill=0)
+	if settings == -1 or "time_listened" not in settings:
+		draw.text((10, 10), "No listening stats available", font=font, fill=0)
 	else:
-		y = 10
-		for key, value in settings.items():
-			draw.text((10, y), f"{key}: {value}", font=font, fill=0)
-			y += 25
+		total_seconds = 0
+		try:
+			total_seconds = int(settings["time_listened"])
+		except (ValueError, TypeError):
+			total_seconds = 0
+		days = total_seconds // 86400
+		hours = (total_seconds % 86400) // 3600
+		mins = (total_seconds % 3600) // 60
+		draw.text((10, 10), f"Time Listened: {days}d {hours}h {mins}m", font=font, fill=0)
 	epd.display(epd.getbuffer(image))
 	epd.lut_GC()
 	epd.refresh()
