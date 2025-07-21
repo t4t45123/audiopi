@@ -4,6 +4,7 @@ import os
 
 picdir = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'pic')
 libdir = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'lib')
+menuSelection = ["Player", "Chapters", "Library", "Volume", "Stats"]
 
 if (os.path.exists(libdir)):
 	sys.path.append(libdir)
@@ -178,6 +179,13 @@ def StoreSettings(book, volume):
 			except json.JSONDecodeError:
 				print("JSON BAD")
 				data = {}
+	prev_time = 0
+	try:
+		prev_time = int(data.get("time_listened", 0))
+	except (ValueError, TypeError):
+		print("Warning: 'time_listened' missing or invalid, resetting to 0.")
+		prev_time = 0
+	data["time_listened"] = prev_time + 60
 	data["book"] = book
 	data["volume"] = volume
 	
@@ -233,6 +241,25 @@ def StoreBook():
 	StoreTime(mrl, current_time)
 	print("stored: " + str(current_time))
 
+
+
+def DrawStats():
+	global epd
+	font = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 20)
+	image = Image.new('1', (epd.height, epd.width), 255)
+	draw = ImageDraw.Draw(image)
+	settings = GetSettings()
+	if settings == -1:
+		draw.text((10, 10), "No stats available", font=font, fill=0)
+	else:
+		y = 10
+		for key, value in settings.items():
+			draw.text((10, y), f"{key}: {value}", font=font, fill=0)
+			y += 25
+	epd.display(epd.getbuffer(image))
+	epd.lut_GC()
+	epd.refresh()
+
 def GetBooks():
 	bookpaths.clear()
 	root_dir= os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))),'player/books')
@@ -257,6 +284,9 @@ def GetChapters():
 	global player
 	chapters = []
 	chapterCount = player.get_chapter_count()
+	if (menuTitle == "Stats"):
+		DrawStats()
+		return
 	for i in range(chapterCount):
 		chapters.append(i+1)
 	return chapters
