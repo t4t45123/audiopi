@@ -330,7 +330,7 @@ def DrawChapters():
 	currentItem = 0
 	for item in chapterToDisplay:
 		fillVal =0
-		if (currentItem == chapterSelection and chapterMenuPageSelection == False):
+		if (currentItem == chapterSelection):
 			draw.rectangle((0,itemYPosition,360,itemYPosition+24), fill=0)
 			fillVal =1
 		chapterTitle = chapterInfo[item-1]['title']
