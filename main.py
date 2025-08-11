@@ -4,7 +4,7 @@ import os
 
 picdir = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'pic')
 libdir = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'lib')
-menuSelection = ["Player", "Chapters", "Library", "Volume", "Stats"]
+menuSelection = ["Player", "Chapters", "Library", "Volume", "Stats", "Bluetooth"]
 
 if (os.path.exists(libdir)):
 	sys.path.append(libdir)
@@ -45,6 +45,7 @@ menuTitle = "Player"
 
 timesPath = "./times.json"
 settingsPath = "./settings.json"
+bluetoothMac = "E8:EE:CC:F4:D6:3C"
 bookpaths = []
 chapterTimes = []
 chapterInfo = []
@@ -59,7 +60,7 @@ def WaitForAudio(mac):
 		print("not connected trying again")
 		time.sleep(2)
 
-WaitForAudio("E8:EE:CC:F4:D6:3C")
+WaitForAudio(bluetoothMac)
 
 def sanitize_path(input_path):
 	from urllib.parse import urlparse, unquote
@@ -313,6 +314,51 @@ def GeneratePagedArray(list):
 	pages.append(page)
 	return pages
 
+bluetoothMenuOptions = ["Disconnect", "Connect"]
+bluetoothMenuIndex = 0
+
+
+def DrawBluetooth():
+	print("bluetooth connection menu")
+	global epd
+	global player
+	font = ImageFont.truetype(os.path.join(picdir,'Font.ttc'), 20)
+	image = Image.new('1', (epd.height, epd.width), 255)
+	draw = ImageDraw.Draw(image)
+	itemYPosition = 3
+	current = 0 
+	for x in bluetoothMenuOptions:
+		fillVal = 0
+		if (current == bluetoothMenuIndex):
+			draw.rectangle((0,itemYPosition,360,itemYPosition+24), fill=0)
+			fillVal =1
+		draw.text((10,itemYPosition), x, font = font, fill = fillVal)
+		current += 1
+
+	epd.display(epd.getbuffer(image))
+	epd.lut_GC()
+	epd.refresh()
+
+def BluetoothEnter():
+    
+	if (bluetoothMenuOptions[bluetoothMenuIndex] == "Disconnect"):
+		print("disconnect")
+		cmd = [
+			"bluetoothctl",
+			"disconnect"
+		]
+		result = subprocess.run(cmd, capture_output=True, text=True)
+		print(result)
+	elif (bluetoothMenuOptions[bluetoothMenuIndex] == "Connect"):
+		print("connect")
+		cmd = [
+			"bluetoothctl",
+			"connect",
+			bluetoothMac
+		]
+		result = subprocess.run(cmd, capture_output=True, text=True)
+		print(result)
+
 chapterMenuPageSelection = False
 chapterPageSelection = 0
 chapterSelection = 0
@@ -450,7 +496,9 @@ def DrawUI():
 	if (menuTitle == "Stats"):
 		DrawStats()
 		return
-
+	if (menuTitle == "Bluetooth"):
+		DrawBluetooth()
+		return
 def Left():
 	print("left")
 	global menuTitle
@@ -500,6 +548,11 @@ def Left():
 			player.audio_set_volume(nextVolume)
 		else:
 			volumeIndex = (volumeIndex -1) % len(volumeArr)
+	elif (menuTitle == "Bluetooth"):
+		global bluetoothMenuIndex
+		bluetoothMenuIndex = bluetoothMenuIndex - 1
+		if (bluetoothMenuIndex < 0):
+			bluetoothMenuIndex = len(bluetoothMenuOptions)-1
 	DrawUI()
 
 
@@ -549,6 +602,11 @@ def right():
 			player.audio_set_volume(nextVolume)
 		else:
 			volumeIndex = (volumeIndex +1) % len(volumeArr)
+	elif (menuTitle == "Bluetooth"):
+		global bluetoothMenuIndex
+		bluetoothMenuIndex = bluetoothMenuIndex + 1
+		if (bluetoothMenuIndex > len(bluetoothMenuOptions)-1):
+			bluetoothMenuIndex = 0
 	DrawUI()
 
 
@@ -571,6 +629,7 @@ def enter():
 			player.stop()
 			player.set_media(media)
 			player.play()
+		DrawUI()
 	elif (menuTitle == "Menu"):
 		print("menuEnter")
 		option = menuSelection[menuSelectionIndex]
@@ -596,6 +655,9 @@ def enter():
 			titleIndex = libraryPageSelection *10 + librarySelection
 			print("loadingBook")
 			LoadBook(book)
+	elif (menuTitle == "Bluetooth"):
+		BluetoothEnter()
+		DrawUI()
 
 def menu():
 	print("menu")
@@ -657,7 +719,7 @@ def DrawChapterSelect(epd):
 	image = Image.new('1', (epd.height, epd.width), 255)
 	draw = ImageDraw.Draw(image)
 
-menuSelection = ["Player", "Chapters", "Library", "Volume", "Stats"]
+menuSelection = ["Player", "Chapters", "Library", "Volume", "Stats", "Bluetooth"]
 menuSelectionIndex = 0
 def DrawMenu():
 	global menuSelection
