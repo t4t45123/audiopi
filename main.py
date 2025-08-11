@@ -45,7 +45,8 @@ menuTitle = "Player"
 
 timesPath = "./times.json"
 settingsPath = "./settings.json"
-bluetoothMac = "E8:EE:CC:F4:D6:3C"
+bluetoothMac = ["E8:EE:CC:F4:D6:3C"]
+bluetoothMacIndex = 0
 bookpaths = []
 chapterTimes = []
 chapterInfo = []
@@ -317,6 +318,7 @@ def GeneratePagedArray(list):
 bluetoothMenuOptions = ["Disconnect", "Connect"]
 bluetoothMenuIndex = 0
 
+(bluetoothMenuMacSelection) = False
 
 def DrawBluetooth():
 	print("bluetooth connection menu")
@@ -325,15 +327,23 @@ def DrawBluetooth():
 	font = ImageFont.truetype(os.path.join(picdir,'Font.ttc'), 20)
 	image = Image.new('1', (epd.height, epd.width), 255)
 	draw = ImageDraw.Draw(image)
-	itemYPosition = 3
+	itemYPosition = 40
 	current = 0 
+	#connect disconnect buttons
 	for x in bluetoothMenuOptions:
 		fillVal = 0
 		if (current == bluetoothMenuIndex):
 			draw.rectangle((0,itemYPosition,360,itemYPosition+24), fill=0)
 			fillVal =1
 		draw.text((10,itemYPosition), x, font = font, fill = fillVal)
+		itemYPosition += 22
 		current += 1
+	#mac address selection
+	macSelectionFillVal = 0
+	if ((bluetoothMenuMacSelection)):
+		macSelectionFillVal = 1
+	draw.rectangle((0,3,360,3+24), fill= macSelectionFillVal)
+	draw.text((10,3), "Device: " + bluetoothMac[bluetoothMacIndex], font = font, fill = not macSelectionFillVal)
 
 	epd.display(epd.getbuffer(image))
 	epd.lut_GC()
@@ -354,7 +364,7 @@ def BluetoothEnter():
 		cmd = [
 			"bluetoothctl",
 			"connect",
-			bluetoothMac
+			bluetoothMac[bluetoothMenuIndex]
 		]
 		result = subprocess.run(cmd, capture_output=True, text=True)
 		print(result)
@@ -550,9 +560,14 @@ def Left():
 			volumeIndex = (volumeIndex -1) % len(volumeArr)
 	elif (menuTitle == "Bluetooth"):
 		global bluetoothMenuIndex
-		bluetoothMenuIndex = bluetoothMenuIndex - 1
-		if (bluetoothMenuIndex < 0):
-			bluetoothMenuIndex = len(bluetoothMenuOptions)-1
+		if ((bluetoothMenuMacSelection)):
+			bluetoothMacIndex = bluetoothMacIndex + 1
+			if (bluetoothMacIndex < 0):
+				bluetoothMacIndex = len(bluetoothMac) - 1
+		else:
+			bluetoothMenuIndex = bluetoothMenuIndex - 1
+			if (bluetoothMenuIndex < 0):
+				bluetoothMenuIndex = len(bluetoothMenuOptions)-1
 	DrawUI()
 
 
@@ -604,9 +619,14 @@ def right():
 			volumeIndex = (volumeIndex +1) % len(volumeArr)
 	elif (menuTitle == "Bluetooth"):
 		global bluetoothMenuIndex
-		bluetoothMenuIndex = bluetoothMenuIndex + 1
-		if (bluetoothMenuIndex > len(bluetoothMenuOptions)-1):
-			bluetoothMenuIndex = 0
+		if ((bluetoothMenuMacSelection)):
+			bluetoothMacIndex = bluetoothMacIndex + 1
+			if (bluetoothMacIndex > len(bluetoothMac) - 1):
+				bluetoothMacIndex = 0
+		else:
+			bluetoothMenuIndex = bluetoothMenuIndex + 1
+			if (bluetoothMenuIndex > len(bluetoothMenuOptions)-1):
+				bluetoothMenuIndex = 0
 	DrawUI()
 
 
@@ -700,6 +720,9 @@ def other():
 		global volumeMenu
 		print (volumeMenu)
 		volumeMenu = not volumeMenu
+	if (menuTitle == "Bluetooth"):
+		global bluetoothMenuMacSelection
+		bluetoothMenuMacSelection = not bluetoothMenuMacSelection
 	DrawUI()
 
 def FormatTime(seconds):
