@@ -364,7 +364,7 @@ def BluetoothEnter():
 		cmd = [
 			"bluetoothctl",
 			"connect",
-			bluetoothMac[bluetoothMenuIndex]
+			bluetoothMac[bluetoothMacIndex]
 		]
 		result = subprocess.run(cmd, capture_output=True, text=True)
 		print(result)
