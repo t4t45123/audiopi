@@ -61,7 +61,7 @@ def WaitForAudio(mac):
 		print("not connected trying again")
 		time.sleep(2)
 
-WaitForAudio(bluetoothMac)
+WaitForAudio(bluetoothMac[bluetoothMacIndex])
 
 def sanitize_path(input_path):
 	from urllib.parse import urlparse, unquote
