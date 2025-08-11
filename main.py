@@ -560,6 +560,7 @@ def Left():
 			volumeIndex = (volumeIndex -1) % len(volumeArr)
 	elif (menuTitle == "Bluetooth"):
 		global bluetoothMenuIndex
+		global bluetoothMacIndex
 		if ((bluetoothMenuMacSelection)):
 			bluetoothMacIndex = bluetoothMacIndex + 1
 			if (bluetoothMacIndex < 0):
@@ -619,6 +620,7 @@ def right():
 			volumeIndex = (volumeIndex +1) % len(volumeArr)
 	elif (menuTitle == "Bluetooth"):
 		global bluetoothMenuIndex
+		global bluetoothMacIndex
 		if ((bluetoothMenuMacSelection)):
 			bluetoothMacIndex = bluetoothMacIndex + 1
 			if (bluetoothMacIndex > len(bluetoothMac) - 1):
@@ -748,7 +750,7 @@ def DrawMenu():
 	global menuSelectionIndex
 	global epd
 	global player
-	font = ImageFont.truetype(os.path.join(picdir,'Font.ttc'),85)
+	font = ImageFont.truetype(os.path.join(picdir,'Font.ttc'),80)
 	image = Image.new('1', (epd.height, epd.width), 255)
 	draw = ImageDraw.Draw(image)
 	draw.text((3,60), (f"{menuSelection[menuSelectionIndex]}"), font = font, fill =0)
