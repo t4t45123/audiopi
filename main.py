@@ -332,7 +332,7 @@ def DrawBluetooth():
 	#connect disconnect buttons
 	for x in bluetoothMenuOptions:
 		fillVal = 0
-		if (current == bluetoothMenuIndex):
+		if (current == bluetoothMenuIndex and not bluetoothMenuMacSelection):
 			draw.rectangle((0,itemYPosition,360,itemYPosition+24), fill=0)
 			fillVal =1
 		draw.text((10,itemYPosition), x, font = font, fill = fillVal)
@@ -342,8 +342,8 @@ def DrawBluetooth():
 	macSelectionFillVal = 0
 	if ((bluetoothMenuMacSelection)):
 		macSelectionFillVal = 1
-	draw.rectangle((0,3,360,3+24), fill= macSelectionFillVal)
-	draw.text((10,3), "Device: " + bluetoothMac[bluetoothMacIndex], font = font, fill = not macSelectionFillVal)
+	draw.rectangle((0,3,360,3+24), fill= not macSelectionFillVal)
+	draw.text((10,3), "Device: " + bluetoothMac[bluetoothMacIndex], font = font, fill =  macSelectionFillVal)
 
 	epd.display(epd.getbuffer(image))
 	epd.lut_GC()
@@ -677,7 +677,6 @@ def enter():
 			LoadBook(book)
 	elif (menuTitle == "Bluetooth"):
 		BluetoothEnter()
-		DrawUI()
 
 def menu():
 	print("menu")
