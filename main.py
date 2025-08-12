@@ -807,7 +807,9 @@ def DrawPlayer(epd, player):
 	chapterTitle = chapterTitleInfo["title"]
 	if (chapterTitle == ""):
 		chapterTitle = currentChapter
-	draw.text((10, 132), (f"Chapter: {chapterTitle}"), font = font24, fill =0)
+	if ("chapter" not in chapterTitle.lower()):
+		chapterTitle = "Chapter: " + chapterTitle
+	draw.text((10, 132), (f"{chapterTitle}"), font = font24, fill =0)
 	draw.text((10,153), (f"{FormatTime(current_seconds)}/{FormatTime(total_seconds)}"), font = font24, fill = 0)
 	draw.text((10,175), chapterTimeText, font = font24, fill =0)
 	#display image
