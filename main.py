@@ -651,7 +651,6 @@ def enter():
 			player.stop()
 			player.set_media(media)
 			player.play()
-		DrawUI()
 	elif (menuTitle == "Menu"):
 		print("menuEnter")
 		option = menuSelection[menuSelectionIndex]
